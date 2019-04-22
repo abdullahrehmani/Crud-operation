@@ -1,37 +1,57 @@
 import React, { Component } from 'react';
-import Mycomponent from './Mycomponent'
+
 import './App.css';
 
+const products = [
+  {
+    name: 'ipad',
+    price: 200
+  },
+  {
+    name: 'iphone',
+    price: 650
+  }
+]
+localStorage.setItem('products',JSON.stringify(products))
+
 class App extends Component {
-constructor(props){
-  super(props);
+  constructor(props){
+    super(props);
+    this.state={
+      products:[]
+    }
 
-
-  this.state={
-    title: 'App title'
   }
-  this.onClick = this.onClick.bind(this);
-
-}
-onClick(){
-  this.setState({
-    title:"new app title"
-  })
-    
-  }
-  render() {
-
-    return (
-      <div  className="App">
-  <h1>{this.state.title}</h1>
-  <div onClick={this.onClick} >Click Here</div>
-  <Mycomponent
-  title="this is the component title" 
-  name="Ali"
+  componentWillMount(){
+    this.getProducts();
   
-  />
-       
-      
+
+  }
+
+
+  getProducts() { 
+    const products=  JSON.parse( localStorage.getItem('products'));
+    this.setState({products});
+
+  }
+
+
+
+
+ 
+  render() {
+    return (
+      <div className="App">
+    <h1>products manger</h1>
+    {
+      this.state.products.map(products=>{
+        return(
+          <div key={products.name}>
+          <span>{products.name}</span> |<span>{products.price}</span>
+          </div>
+        )
+      })
+    }
       </div>
     );
   }
