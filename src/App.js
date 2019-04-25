@@ -25,6 +25,7 @@ class App extends Component {
     }
     this.onAdd=this.onAdd.bind(this);
     this.onDelete=this.onDelete.bind(this);
+    this.onEditSubmit=this.onEditSubmit.bind(this);
   }
   componentWillMount(){
    const products= this.getProducts();
@@ -50,7 +51,19 @@ class App extends Component {
       return product.name !==name;
     });
     this.setState({products: filterProducts});
-  console.log(filterProducts)
+  }
+  onEditSubmit(name , price, orignalName){
+    let products = this.getProducts();
+    products = products.map(product=>{
+      if(product.name === orignalName){
+        product.name= name;
+        product.price = price;
+
+      }
+      return product
+    });
+    this.setState({products});
+
   }
   render() {
     return (
@@ -61,7 +74,11 @@ class App extends Component {
     {
       this.state.products.map(products=>{
         return(
-         <Productitem  onDelete={this.onDelete}  key={products.name}{...products}/>  
+         <Productitem 
+          onDelete={this.onDelete}
+            key={products.name}
+            {...products}
+            onEditSubmit={this.onEditSubmit}/>  
         )
 
       })
